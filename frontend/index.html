@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-50">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CricImpact Phase 2 — Integrated Batting & Bowling Contribution Analytics</title>
+  <meta name="description" content="Independent, statistically defensible cricket player contribution analytics for T20 cricket.">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              pink: '#EC4899',
+              'pink-deep': '#DB2777',
+              'pink-soft': '#FDF2F8',
+              blue: '#3B82F6',
+              'blue-deep': '#2563EB',
+              'blue-navy': '#1E3A8A',
+              'blue-soft': '#EFF6FF',
+              slate: '#0F172A',
+              subtle: '#64748B',
+              border: '#E2E8F0',
+              bg: '#F8FAFC'
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Custom Design System Styles -->
+  <link rel="stylesheet" href="./src/assets/styles/main.css">
+</head>
+<body class="h-[100dvh] flex overflow-hidden text-slate-800 antialiased font-sans bg-[#F8FAFC]">
+
+  <!-- Accessible Skip Link -->
+  <a href="#main-content" class="skip-link visually-hidden">Skip to main content</a>
+
+  <!-- Mobile Overlay Backdrop -->
+  <div id="mobile-overlay" class="fixed inset-0 bg-slate-900/40 z-30 hidden md:hidden transition-opacity"></div>
+
+  <!-- Sidebar Navigation Container -->
+  <div id="sidebar-container" class="fixed md:static inset-y-0 left-0 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+    <!-- Populated by Navigation.js -->
+  </div>
+
+  <!-- Main Viewport Area -->
+  <div class="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
+    
+    <!-- Top Bar Header (Mobile Hamburger & Quick Status) -->
+    <header class="h-14 bg-white border-b border-slate-200 px-4 flex items-center justify-between flex-shrink-0 z-20 shadow-xs">
+      <div class="flex items-center space-x-3">
+        <!-- Mobile Drawer Hamburger Toggle Button -->
+        <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors" aria-label="Toggle navigation menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+
+        <div class="flex items-center space-x-2">
+          <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-pink-500 to-blue-500 flex items-center justify-center text-white font-black text-xs shadow-xs md:hidden">
+            C2
+          </div>
+          <span class="text-sm font-extrabold text-slate-900 tracking-tight hidden sm:inline">CricImpact Phase 2</span>
+          <span class="text-xs px-2 py-0.5 rounded-full font-bold bg-pink-50 text-pink-700 border border-pink-200 hidden lg:inline">
+            Pink + Blue Analytics
+          </span>
+        </div>
+      </div>
+
+      <!-- Quick Right Header Badges -->
+      <div class="flex items-center space-x-3 text-xs">
+        <div class="flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 font-medium">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span class="font-bold">798 Matches</span>
+        </div>
+
+        <a href="#/bowling/compare?bowlers=4722,2933,6256" class="hidden sm:inline-flex items-center px-3 py-1 rounded-lg text-xs font-bold text-pink-700 bg-pink-50 hover:bg-pink-100 border border-pink-200 transition-colors">
+          Compare Trio &rarr;
+        </a>
+      </div>
+    </header>
+
+    <!-- Scrollable Page Container -->
+    <main id="main-content" class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+      <div id="page-container" class="max-w-7xl mx-auto">
+        <!-- Rendered Page Output -->
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Core Application Scripts (ES Modules) -->
+  <script type="module">
+    import { Router } from './src/utils/router.js';
+    import { Navigation } from './src/components/Navigation.js';
+    
+    // Page Renderers
+    import { renderOverviewPage } from './src/pages/OverviewPage.js';
+    import { renderBowlingDashboard } from './src/pages/BowlingDashboard.js';
+    import { renderBowlingLeaderboard } from './src/pages/BowlingLeaderboard.js';
+    import { renderBowlerProfile } from './src/pages/BowlerProfile.js';
+    import { renderBowlerComparison } from './src/pages/BowlerComparison.js';
+    import { renderMatchAnalysis } from './src/pages/MatchAnalysis.js';
+    import { renderBattingDashboard } from './src/pages/BattingDashboard.js';
+    import { renderBattingExplorer } from './src/pages/BattingExplorer.js';
+    import { renderBatterProfile } from './src/pages/BatterProfile.js';
+    import { renderBatterComparison } from './src/pages/BatterComparison.js';
+    import { renderMatchWormGraph } from './src/pages/MatchWormGraph.js';
+    import { renderSettingsPage } from './src/pages/SettingsPage.js';
+    import { renderPressureReliabilityPage } from './src/pages/PressureReliabilityPage.js';
+    import { renderPRIPlayerProfile } from './src/pages/PRIPlayerProfilePage.js';
+
+    function initApp() {
+      // 1. Initialize Navigation Sidebar
+      const nav = new Navigation('sidebar-container');
+      nav.render();
+
+      // 2. Mobile Menu Toggle Logic
+      const mobileBtn = document.getElementById('mobile-menu-btn');
+      const mobileOverlay = document.getElementById('mobile-overlay');
+      const sidebarContainer = document.getElementById('sidebar-container');
+
+      function toggleMobileMenu() {
+        const isHidden = sidebarContainer.classList.contains('-translate-x-full');
+        if (isHidden) {
+          sidebarContainer.classList.remove('-translate-x-full');
+          mobileOverlay.classList.remove('hidden');
+        } else {
+          sidebarContainer.classList.add('-translate-x-full');
+          mobileOverlay.classList.add('hidden');
+        }
+      }
+
+      function closeMobileMenu() {
+        sidebarContainer.classList.add('-translate-x-full');
+        mobileOverlay.classList.add('hidden');
+      }
+
+      if (mobileBtn) mobileBtn.addEventListener('click', toggleMobileMenu);
+      if (mobileOverlay) mobileOverlay.addEventListener('click', closeMobileMenu);
+
+      // 3. Initialize Router & Register Routes
+      const pageContainer = document.getElementById('page-container');
+      const router = new Router(pageContainer);
+
+      // Overview
+      router.addRoute('/', (c) => renderOverviewPage(c));
+      router.addRoute('/overview', (c) => renderOverviewPage(c));
+
+      // Bowling Routes
+      router.addRoute('/bowling/dashboard', (c) => renderBowlingDashboard(c));
+      router.addRoute('/bowling/leaderboard', (c, params) => renderBowlingLeaderboard(c, params));
+      router.addRoute('/bowling/profile', (c, params) => renderBowlerProfile(c, params));
+      router.addRoute('/bowling/profile/:id', (c, params) => renderBowlerProfile(c, params));
+      router.addRoute('/bowling/players', (c, params) => renderBowlerProfile(c, params));
+      router.addRoute('/bowling/players/:id', (c, params) => renderBowlerProfile(c, params));
+      router.addRoute('/bowling/compare', (c, params) => renderBowlerComparison(c, params));
+      router.addRoute('/bowling/matches', (c, params) => renderMatchAnalysis(c, params));
+      router.addRoute('/bowling/match/:id', (c, params) => renderMatchAnalysis(c, params));
+
+      // Modernized Batting HPP Routes (Stage B9 — Native Light Theme Pink+Blue UI)
+      router.addRoute('/batting/dashboard', (c, params) => {
+        document.title = 'Batting HPP Dashboard | CricImpact Phase 2';
+        return renderBattingDashboard(c, params);
+      });
+      router.addRoute('/batting/leaderboard', (c, params) => {
+        document.title = 'Batting HPP Explorer | CricImpact Phase 2';
+        return renderBattingExplorer(c, params);
+      });
+      router.addRoute('/batting/explorer', (c, params) => {
+        document.title = 'Batting HPP Explorer | CricImpact Phase 2';
+        return renderBattingExplorer(c, params);
+      });
+      router.addRoute('/batting/players', (c, params) => {
+        document.title = 'Batter HPP Profile | CricImpact Phase 2';
+        return renderBatterProfile(c, params);
+      });
+      router.addRoute('/batting/players/:name', (c, params) => {
+        return renderBatterProfile(c, params);
+      });
+      router.addRoute('/batting/profile', (c, params) => {
+        document.title = 'Batter HPP Profile | CricImpact Phase 2';
+        return renderBatterProfile(c, params);
+      });
+      router.addRoute('/batting/profile/:name', (c, params) => {
+        return renderBatterProfile(c, params);
+      });
+      router.addRoute('/batting/compare', (c, params) => {
+        document.title = 'Batter Comparison | CricImpact Phase 2';
+        return renderBatterComparison(c, params);
+      });
+      router.addRoute('/batting/worm_graph', (c, params) => {
+        document.title = 'Match Win Probability Worm Graph | CricImpact Phase 2';
+        return renderMatchWormGraph(c, params);
+      });
+      router.addRoute('/batting/worm', (c, params) => {
+        document.title = 'Match Win Probability Worm Graph | CricImpact Phase 2';
+        return renderMatchWormGraph(c, params);
+      });
+
+      // Pressure Reliability Index (Stage PRI-3)
+      router.addRoute('/pressure-reliability', (c, params) => {
+        document.title = 'Pressure Reliability | CricImpact Phase 2';
+        return renderPressureReliabilityPage(c, params);
+      });
+      router.addRoute('/pressure-reliability/batting', (c, params) => {
+        document.title = 'Batting Pressure Reliability | CricImpact Phase 2';
+        return renderPressureReliabilityPage(c, { ...params, tab: 'batting' });
+      });
+      router.addRoute('/pressure-reliability/bowling', (c, params) => {
+        document.title = 'Bowling Pressure Reliability | CricImpact Phase 2';
+        return renderPressureReliabilityPage(c, { ...params, tab: 'bowling' });
+      });
+      router.addRoute('/pressure-reliability/batting/player/:id', (c, params) => {
+        return renderPRIPlayerProfile(c, params, 'batting');
+      });
+      router.addRoute('/pressure-reliability/bowling/player/:id', (c, params) => {
+        return renderPRIPlayerProfile(c, params, 'bowling');
+      });
+
+      // Platform Settings & Metadata (includes PRI Metric Guide)
+      router.addRoute('/settings', (c, params) => renderSettingsPage(c, params));
+
+      // Hook router navigation to update sidebar active link and close mobile menu
+      window.addEventListener('hashchange', () => {
+        nav.updateActiveLink(window.location.hash || '#/overview');
+        closeMobileMenu();
+        // Reset scroll position
+        const main = document.getElementById('main-content');
+        if (main) main.scrollTop = 0;
+      });
+
+      // Start Routing
+      router.init();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initApp);
+    } else {
+      initApp();
+    }
+  </script>
+</body>
+</html>

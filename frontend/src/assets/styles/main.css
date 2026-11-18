@@ -1,0 +1,343 @@
+/* ==========================================================================
+   CricImpact Phase 2 — Premium Pink + Blue Light Theme Design System
+   ========================================================================== */
+
+:root {
+  /* Primary Pink Palette */
+  --primary-pink: #EC4899;
+  --deep-pink: #DB2777;
+  --soft-pink: #FDF2F8;
+  --light-pink: #FCE7F3;
+
+  /* Primary Blue Palette */
+  --primary-blue: #3B82F6;
+  --deep-blue: #2563EB;
+  --navy-blue: #1E3A8A;
+  --soft-blue: #EFF6FF;
+  --light-blue: #DBEAFE;
+
+  /* Surfaces & Backgrounds */
+  --bg-main: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --bg-subtle: #F1F5F9;
+
+  /* Typography */
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
+  --text-muted: #94A3B8;
+
+  /* Borders & Dividers */
+  --border-light: #E2E8F0;
+  --border-pink: #FBCFE8;
+  --border-blue: #BFDBFE;
+
+  /* Semantic Status Colors */
+  --color-positive: #16A34A;
+  --color-positive-bg: #DCFCE7;
+  --color-negative: #DC2626;
+  --color-negative-bg: #FEE2E2;
+  --color-warning: #D97706;
+  --color-warning-bg: #FEF3C7;
+
+  /* Phase Accents */
+  --phase-pp: #3B82F6;
+  --phase-pp-bg: #EFF6FF;
+  --phase-mid: #EC4899;
+  --phase-mid-bg: #FDF2F8;
+  --phase-death: #1E3A8A;
+  --phase-death-bg: #DBEAFE;
+
+  /* Gradients */
+  --grad-hero: linear-gradient(135deg, #EC4899 0%, #3B82F6 100%);
+  --grad-pink-blue-subtle: linear-gradient(135deg, #FDF2F8 0%, #EFF6FF 100%);
+  --grad-accent-btn: linear-gradient(135deg, #2563EB 0%, #DB2777 100%);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+  --shadow-pink: 0 4px 14px 0 rgba(236, 72, 153, 0.25);
+  --shadow-blue: 0 4px 14px 0 rgba(59, 130, 246, 0.25);
+}
+
+/* Base Styles */
+body {
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Card Styles */
+.card-base {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 1rem;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease-in-out;
+}
+.card-base:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Gradient Hero Container */
+.hero-gradient {
+  background: var(--grad-hero);
+  color: #FFFFFF;
+}
+
+/* Sub-card highlights */
+.card-pink-accent {
+  border-top: 3px solid var(--primary-pink);
+  background: linear-gradient(180deg, var(--soft-pink) 0%, #FFFFFF 30%);
+}
+.card-blue-accent {
+  border-top: 3px solid var(--primary-blue);
+  background: linear-gradient(180deg, var(--soft-blue) 0%, #FFFFFF 30%);
+}
+.card-deep-blue-accent {
+  border-top: 3px solid var(--navy-blue);
+  background: linear-gradient(180deg, var(--light-blue) 0%, #FFFFFF 30%);
+}
+
+/* Interactive Buttons */
+.btn-primary {
+  background-color: var(--primary-blue);
+  color: #FFFFFF;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.btn-primary:hover {
+  background-color: var(--deep-blue);
+  box-shadow: var(--shadow-blue);
+}
+
+.btn-secondary {
+  background-color: #FFFFFF;
+  color: var(--deep-blue);
+  border: 1px solid var(--border-blue);
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.btn-secondary:hover {
+  background-color: var(--soft-blue);
+  border-color: var(--primary-blue);
+}
+
+.btn-pink {
+  background-color: var(--primary-pink);
+  color: #FFFFFF;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.btn-pink:hover {
+  background-color: var(--deep-pink);
+  box-shadow: var(--shadow-pink);
+}
+
+/* Badges */
+.badge-pink {
+  background-color: var(--light-pink);
+  color: var(--deep-pink);
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.375rem;
+  display: inline-block;
+}
+.badge-blue {
+  background-color: var(--light-blue);
+  color: var(--deep-blue);
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.375rem;
+  display: inline-block;
+}
+.badge-positive {
+  background-color: var(--color-positive-bg);
+  color: var(--color-positive);
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.375rem;
+  display: inline-block;
+}
+.badge-negative {
+  background-color: var(--color-negative-bg);
+  color: var(--color-negative);
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.375rem;
+  display: inline-block;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes pulseSubtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.skeleton-pulse {
+  animation: pulseSubtle 1.5s ease-in-out infinite;
+  background-color: #E2E8F0;
+  border-radius: 0.375rem;
+}
+
+/* ==========================================================================
+   Stage B9 — Accessibility, Responsive Tables & Batting HPP Theme Extensions
+   ========================================================================== */
+
+/* Visually Hidden Utility (opt-out on focus-within / active for skip links) */
+.visually-hidden:where(:not(:focus-within, :active)) {
+  position: absolute !important;
+  clip-path: inset(50%) !important;
+  overflow: hidden !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+}
+
+.skip-link:focus {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background-color: var(--navy-blue);
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.875rem;
+  box-shadow: var(--shadow-lg);
+}
+
+/* Accessible High-Contrast Focus Indicators */
+:where(a:any-link, button, input, select, textarea, [tabindex="0"]):focus-visible {
+  outline: 2px solid var(--deep-pink);
+  outline-offset: 2px;
+}
+
+/* Minimum Touch/Click Target Sizing (WCAG 2.5.8) */
+button,
+select,
+.nav-item {
+  min-block-size: 24px;
+}
+@media (pointer: coarse) {
+  button,
+  select,
+  .nav-item {
+    min-block-size: 38px;
+  }
+}
+
+/* Responsive Hero Title Typography (max <= 2.5x min for 200% zoom WCAG 1.4.4) */
+.hero-title-fluid {
+  font-size: clamp(1.375rem, 1.1rem + 1.2vw, 2.125rem);
+  line-height: 1.2;
+}
+
+/* Container-Aware Responsive Scrollable Tables */
+.table-wrapper {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-inline-size: 100%;
+  max-block-size: min(620px, 75dvh);
+  container-type: inline-size;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrapper table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.table-wrapper thead {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 2;
+}
+
+/* Batting HPP Pressure Tier Badges (Light Theme Pink/Blue/Navy Harmony) */
+.tier-badge-low {
+  background-color: #F1F5F9;
+  color: #475569;
+  border: 1px solid #CBD5E1;
+}
+.tier-badge-medium {
+  background-color: #EFF6FF;
+  color: #1D4ED8;
+  border: 1px solid #BFDBFE;
+}
+.tier-badge-high {
+  background-color: #FEF3C7;
+  color: #B45309;
+  border: 1px solid #FDE68A;
+}
+.tier-badge-extreme {
+  background-color: #FDF2F8;
+  color: #BE185D;
+  border: 1px solid #FBCFE8;
+}
+.tier-badge-dnb {
+  background-color: #F1F5F9;
+  color: #64748B;
+  border: 1px dashed #94A3B8;
+}
+
+/* Batting Hero Gradient (Blue -> Pink -> Deep Navy accent harmony) */
+.hero-gradient-batting {
+  background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 52%, #EC4899 100%);
+  color: #FFFFFF;
+}

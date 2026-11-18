@@ -1,0 +1,20 @@
+{
+  "cleanUrls": false,
+  "rewrites": [
+    {
+      "source": "/((?!api/|src/|health$|favicon\\.ico$).*)",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/src/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    }
+  ]
+}

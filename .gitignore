@@ -1,0 +1,38 @@
+# Python virtual environments & caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node / Vercel local build artifacts
+node_modules/
+.vercel/
+npm-debug.log*
+
+# Local environment secrets & credentials (keep .env.example)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Temporary scratch scripts, logs & OS/editor junk
+scratch/
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Datasets & generated trajectory data excluded for frontend-only GitHub publish (Option B — handled separately for Render)
+data/
+docs/worm_graph/
